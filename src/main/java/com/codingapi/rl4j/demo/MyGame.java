@@ -7,8 +7,11 @@ import org.deeplearning4j.rl4j.space.ArrayObservationSpace;
 import org.deeplearning4j.rl4j.space.DiscreteSpace;
 import org.deeplearning4j.rl4j.space.ObservationSpace;
 
+/**
+ * 游戏控制的对象
+ */
 @Slf4j
-public class MySimple implements MDP<MySimpleState, Integer, DiscreteSpace> {
+public class MyGame implements MDP<MyGameState, Integer, DiscreteSpace> {
 
     /**
      * 游戏结束的最大步数
@@ -20,7 +23,10 @@ public class MySimple implements MDP<MySimpleState, Integer, DiscreteSpace> {
      */
     final private int maxReward;
 
-    private MySimpleState mySimpleState;
+    /**
+     * 游戏的状态信息
+      */
+    private MyGameState mySimpleState;
 
     /**
      * 方向 left right
@@ -28,19 +34,19 @@ public class MySimple implements MDP<MySimpleState, Integer, DiscreteSpace> {
     private DiscreteSpace actionSpace = new DiscreteSpace(2);
 
     /**
-     * 对应 MySimpleState 的存储空间数据
+     * 对应 MyGameState 的存储空间数据
      */
-    private ObservationSpace<MySimpleState> observationSpace = new ArrayObservationSpace(new int[] {2});
+    private ObservationSpace<MyGameState> observationSpace = new ArrayObservationSpace(new int[] {2});
 
 
-    public MySimple(int maxStep,int maxReward) {
+    public MyGame(int maxStep, int maxReward) {
         this.maxStep = maxStep;
         this.maxReward = maxReward;
     }
 
 
     @Override
-    public ObservationSpace<MySimpleState> getObservationSpace() {
+    public ObservationSpace<MyGameState> getObservationSpace() {
         return observationSpace;
     }
 
@@ -50,9 +56,9 @@ public class MySimple implements MDP<MySimpleState, Integer, DiscreteSpace> {
     }
 
     @Override
-    public MySimpleState reset() {
+    public MyGameState reset() {
         //重置参数
-        return mySimpleState = new MySimpleState(0,0);
+        return mySimpleState = new MyGameState(0,0);
     }
 
 
@@ -62,20 +68,22 @@ public class MySimple implements MDP<MySimpleState, Integer, DiscreteSpace> {
     }
 
     @Override
-    public StepReply<MySimpleState> step(Integer action) {
-        //游戏执行一步 action 为动作
+    public StepReply<MyGameState> step(Integer action) {
+        //游戏执行一步 action 为动作 0:left 1:right
         int reward = (action==0?-1:1);
 
-        //游戏的当前状态
-        mySimpleState = new MySimpleState( mySimpleState.getReward()+reward,mySimpleState.getStep() + 1);
+        //游戏的状态
+        mySimpleState = new MyGameState( mySimpleState.getReward()+reward,mySimpleState.getStep() + 1);
 
+        //返回操作响应信息
         return new StepReply<>(mySimpleState, reward, isDone(), null);
     }
 
     @Override
     public boolean isDone() {
-
         boolean res =   mySimpleState.getReward() == maxReward;
+
+        //当结束时，打印总步数与得分.
         if(res){
             log.info("step->{},reward->{}",mySimpleState.getStep(),mySimpleState.getReward());
         }
@@ -84,7 +92,7 @@ public class MySimple implements MDP<MySimpleState, Integer, DiscreteSpace> {
 
 
     @Override
-    public MDP<MySimpleState, Integer, DiscreteSpace> newInstance() {
-        return new MySimple(maxStep,maxReward);
+    public MDP<MyGameState, Integer, DiscreteSpace> newInstance() {
+        return new MyGame(maxStep,maxReward);
     }
 }

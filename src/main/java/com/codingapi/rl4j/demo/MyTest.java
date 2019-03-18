@@ -1,5 +1,6 @@
 package com.codingapi.rl4j.demo;
 
+import lombok.extern.slf4j.Slf4j;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.QLearning;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteDense;
 import org.deeplearning4j.rl4j.network.dqn.DQNFactoryStdDense;
@@ -10,14 +11,13 @@ import org.nd4j.linalg.learning.config.Adam;
 import java.io.IOException;
 
 /**
- * @author rubenfiszel (ruben.fiszel@epfl.ch) on 8/11/16.
- * <p>
- * main example for toy DQN
+ *  游戏测试
  */
+@Slf4j
 public class MyTest {
 
 
-    public static QLearning.QLConfiguration TOY_QL =
+    public static QLearning.QLConfiguration QL_CONFIG =
         new QLearning.QLConfiguration(
             123,   //Random seed
             1000,//Max step By epoch 批次下最大执行的步数
@@ -36,7 +36,7 @@ public class MyTest {
 
 
 
-    public static DQNFactoryStdDense.Configuration TOY_NET =
+    public static DQNFactoryStdDense.Configuration DQN_NET =
         DQNFactoryStdDense.Configuration.builder()
             .l2(0.01)
             .updater(new Adam(1e-2))
@@ -44,11 +44,7 @@ public class MyTest {
             .numHiddenNodes(16)
             .build();
 
-    public static void main(String[] args) throws IOException {
-//        learning();
-//        testing();
-          running();
-    }
+
 
     public static void learning() throws IOException {
 
@@ -56,13 +52,13 @@ public class MyTest {
         DataManager manager = new DataManager();
 
         //define the mdp from toy (toy length)
-        MySimple mdp = new MySimple(20,5);
+        MyGame mdp = new MyGame(20,5);
 
         //define the training method
-        QLearningDiscreteDense<MySimpleState> dql = new QLearningDiscreteDense<MySimpleState>(mdp, TOY_NET, TOY_QL, manager);
+        QLearningDiscreteDense<MyGameState> dql = new QLearningDiscreteDense<MyGameState>(mdp, DQN_NET, QL_CONFIG, manager);
 
         //get the final policy
-        DQNPolicy<MySimpleState> pol = dql.getPolicy();
+        DQNPolicy<MyGameState> pol = dql.getPolicy();
 
         //start the training
         dql.train();
@@ -83,21 +79,22 @@ public class MyTest {
         DataManager manager = new DataManager();
 
         //define the mdp from toy (toy length)
-        MySimple mdp = new MySimple(20,5);
+        MyGame mdp = new MyGame(20,5);
 
         //define the training method
-        QLearningDiscreteDense<MySimpleState> dql = new QLearningDiscreteDense<MySimpleState>(mdp, TOY_NET, TOY_QL, manager);
+        QLearningDiscreteDense<MyGameState> dql = new QLearningDiscreteDense<MyGameState>(mdp, DQN_NET, QL_CONFIG, manager);
 
         //start the training
         dql.train();
 
         //get the final policy
-        DQNPolicy<MySimpleState> policy = dql.getPolicy();
+        DQNPolicy<MyGameState> policy = dql.getPolicy();
 
         for (int i = 0; i < 10; i++) {
             mdp.reset();
+
             double reward = policy.play(mdp);
-            System.out.println(reward);
+            log.info("reward-->{}",reward);
         }
 
         //useless on toy but good practice!
@@ -108,16 +105,22 @@ public class MyTest {
     public static void testing() throws IOException{
 
         //load the previous agent
-        DQNPolicy<MySimpleState> policy = DQNPolicy.load("my_simple.policy");
+        DQNPolicy<MyGameState> policy = DQNPolicy.load("my_simple.policy");
 
         //define the mdp from toy (toy length)
-        MySimple mdp = new MySimple(20,5);
+        MyGame mdp = new MyGame(20,5);
 
         for (int i = 0; i < 10; i++) {
             mdp.reset();
             double reward = policy.play(mdp);
             System.out.println(reward);
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+//        learning();
+//        testing();
+         running();
     }
 
 
