@@ -21,7 +21,7 @@ public class MyTest {
         new QLearning.QLConfiguration(
             123,   //Random seed
             1000,//Max step By epoch 批次下最大执行的步数
-            500, //Max step            总执行的部署
+            5000, //Max step            总执行的部署
             1000, //Max size of experience replay 记忆数据
             100,    //size of batches
             100,   //target update (hard) 每10次更新一次参数
@@ -52,7 +52,7 @@ public class MyTest {
         DataManager manager = new DataManager();
 
         //define the mdp from toy (toy length)
-        MyGame mdp = new MyGame(20,5);
+        MyGame mdp = new MyGame(5);
 
         //define the training method
         QLearningDiscreteDense<MyGameState> dql = new QLearningDiscreteDense<MyGameState>(mdp, DQN_NET, QL_CONFIG, manager);
@@ -79,7 +79,7 @@ public class MyTest {
         DataManager manager = new DataManager();
 
         //define the mdp from toy (toy length)
-        MyGame mdp = new MyGame(20,5);
+        MyGame mdp = new MyGame(5);
 
         //define the training method
         QLearningDiscreteDense<MyGameState> dql = new QLearningDiscreteDense<MyGameState>(mdp, DQN_NET, QL_CONFIG, manager);
@@ -108,7 +108,7 @@ public class MyTest {
         DQNPolicy<MyGameState> policy = DQNPolicy.load("my_simple.policy");
 
         //define the mdp from toy (toy length)
-        MyGame mdp = new MyGame(20,5);
+        MyGame mdp = new MyGame(150);
 
         for (int i = 0; i < 10; i++) {
             mdp.reset();
@@ -118,9 +118,9 @@ public class MyTest {
     }
 
     public static void main(String[] args) throws IOException {
-//        learning();
+        learning();
 //        testing();
-         running();
+//         running();
     }
 
 

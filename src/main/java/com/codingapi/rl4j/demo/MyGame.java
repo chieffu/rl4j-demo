@@ -13,10 +13,6 @@ import org.deeplearning4j.rl4j.space.ObservationSpace;
 @Slf4j
 public class MyGame implements MDP<MyGameState, Integer, DiscreteSpace> {
 
-    /**
-     * 游戏结束的最大步数
-     */
-    final private int maxStep;
 
     /**
      * 最大分数
@@ -39,8 +35,7 @@ public class MyGame implements MDP<MyGameState, Integer, DiscreteSpace> {
     private ObservationSpace<MyGameState> observationSpace = new ArrayObservationSpace(new int[] {2});
 
 
-    public MyGame(int maxStep, int maxReward) {
-        this.maxStep = maxStep;
+    public MyGame(int maxReward) {
         this.maxReward = maxReward;
     }
 
@@ -93,6 +88,6 @@ public class MyGame implements MDP<MyGameState, Integer, DiscreteSpace> {
 
     @Override
     public MDP<MyGameState, Integer, DiscreteSpace> newInstance() {
-        return new MyGame(maxStep,maxReward);
+        return new MyGame(maxReward);
     }
 }
