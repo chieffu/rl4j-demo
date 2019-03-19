@@ -80,12 +80,8 @@ public class Tetris extends JFrame {
 		return board.toArray();
 	}
 
-	public int getScore(){
-		try {
-			return Integer.parseInt(statusbar.getText());
-		}catch (Exception e){
-			return 0;
-		}
+	public double getScore(){
+		return board.getScore();
 	}
 
 	public boolean isOver(){

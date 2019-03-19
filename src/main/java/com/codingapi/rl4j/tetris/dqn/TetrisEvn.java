@@ -1,12 +1,14 @@
 package com.codingapi.rl4j.tetris.dqn;
 
 import com.codingapi.rl4j.tetris.Tetris;
+import lombok.extern.slf4j.Slf4j;
 import org.deeplearning4j.gym.StepReply;
 import org.deeplearning4j.rl4j.mdp.MDP;
 import org.deeplearning4j.rl4j.space.ArrayObservationSpace;
 import org.deeplearning4j.rl4j.space.DiscreteSpace;
 import org.deeplearning4j.rl4j.space.ObservationSpace;
 
+@Slf4j
 public class TetrisEvn  implements MDP<TetrisState, Integer, DiscreteSpace> {
 
     private Tetris tetris;
@@ -47,7 +49,6 @@ public class TetrisEvn  implements MDP<TetrisState, Integer, DiscreteSpace> {
         moveStep(integer);
 
         tetrisState = new TetrisState(tetris.getScore(),tetris.toArray());
-
         return new StepReply<>(tetrisState, tetrisState.getScore(), isDone(), null);
     }
 

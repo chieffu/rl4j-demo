@@ -4,15 +4,15 @@ import org.deeplearning4j.rl4j.space.Encodable;
 
 public class TetrisState implements Encodable {
 
-    private int score;
+    private double score;
 
     private double[] data;
 
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 
-    public TetrisState(int score,double[] data) {
+    public TetrisState(double score,double[] data) {
         this.score = score;
         this.data =data;
     }

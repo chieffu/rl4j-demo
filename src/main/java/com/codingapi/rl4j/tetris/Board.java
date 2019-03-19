@@ -21,6 +21,7 @@ public class Board extends JPanel implements ActionListener {
     final int BoardHeight = 22;
 
     Timer timer;
+    private double timeCount = 0;
     boolean isFallingFinished = false;
     boolean isStarted = false;
     boolean isOver = false;
@@ -54,6 +55,7 @@ public class Board extends JPanel implements ActionListener {
         } else {
             oneLineDown();
         }
+        timeCount++;
     }
 
 
@@ -67,6 +69,7 @@ public class Board extends JPanel implements ActionListener {
         if (isPaused)
             return;
 
+        timeCount = 0;
         isStarted = true;
         isOver = false;
         isFallingFinished = false;
@@ -304,6 +307,10 @@ public class Board extends JPanel implements ActionListener {
 
      public void close(){
          timer.stop();
+     }
+
+     public double getScore(){
+         return numLinesRemoved==0?-timeCount:numLinesRemoved;
      }
 
      public boolean isOver(){
