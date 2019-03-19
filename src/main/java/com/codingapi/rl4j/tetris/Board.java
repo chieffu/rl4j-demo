@@ -310,7 +310,13 @@ public class Board extends JPanel implements ActionListener {
      }
 
      public double getScore(){
-         return numLinesRemoved==0?-timeCount:numLinesRemoved;
+         if(timeCount==0){
+             return 0;
+         }
+         if(numLinesRemoved==0){
+             return 1-(1/timeCount);
+         }
+         return numLinesRemoved;
      }
 
      public boolean isOver(){
