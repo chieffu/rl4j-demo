@@ -253,9 +253,6 @@ public class Board extends JPanel implements ActionListener {
                          x + squareWidth() - 1, y + 1);
     }
 
-    public double[] toArray() {
-        return curPiece.toArray();
-    }
 
     class TAdapter extends KeyAdapter {
          public void keyPressed(KeyEvent e) {
@@ -314,7 +311,7 @@ public class Board extends JPanel implements ActionListener {
              return 0;
          }
          if(numLinesRemoved==0){
-             return 1-(1/timeCount);
+             return (1/timeCount);
          }
          return numLinesRemoved;
      }
@@ -337,6 +334,19 @@ public class Board extends JPanel implements ActionListener {
 
     public void up(){
         tryMove(curPiece.rotateLeft(), curX, curY);
+    }
+
+
+    public double[] toArray() {
+        double[] curpiece = curPiece.toArray();
+        double[] array = new double[curpiece.length+board.length];
+        for(int i=0;i<curpiece.length;i++){
+            array[i] = curpiece[i];
+        }
+        for(int i=0;i<board.length;i++){
+            array[i+curpiece.length] = board[i].name().hashCode();
+        }
+        return array;
     }
 
 }

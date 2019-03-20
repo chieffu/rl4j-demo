@@ -17,7 +17,7 @@ public class TetrisEvn  implements MDP<TetrisState, Integer, DiscreteSpace> {
 
     private DiscreteSpace actionSpace = new DiscreteSpace(6);
 
-    private ObservationSpace<TetrisState> observationSpace = new ArrayObservationSpace(new int[] {8});
+    private ObservationSpace<TetrisState> observationSpace = new ArrayObservationSpace(new int[] {228});
 
 
     @Override
