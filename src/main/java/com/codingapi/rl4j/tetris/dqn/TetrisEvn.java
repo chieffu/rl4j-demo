@@ -47,7 +47,6 @@ public class TetrisEvn implements MDP<TetrisState, Integer, DiscreteSpace> {
     @Override
     public StepReply<TetrisState> step(Integer integer) {
         moveStep(integer);
-
         tetrisState = new TetrisState(tetris.getScore(), tetris.toArray());
         return new StepReply<>(tetrisState, tetrisState.getScore(), isDone(), null);
     }
@@ -72,6 +71,9 @@ public class TetrisEvn implements MDP<TetrisState, Integer, DiscreteSpace> {
             }
             case 5: {
                 tetris.dropDown();
+                break;
+            }
+            default:{
                 break;
             }
         }
