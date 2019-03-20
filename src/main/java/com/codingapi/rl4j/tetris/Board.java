@@ -307,7 +307,9 @@ public class Board extends JPanel implements ActionListener {
 //        if (numLinesRemoved == 0) {
 //            return timeCount;
 //        }
-        return numLinesRemoved;
+//        return numLinesRemoved;
+
+        return timeCount;
     }
 
     public boolean isOver() {
