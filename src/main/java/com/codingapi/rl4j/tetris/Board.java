@@ -301,12 +301,12 @@ public class Board extends JPanel implements ActionListener {
     }
 
     public double getScore() {
-        if (timeCount == 0) {
-            return 0;
-        }
-        if (numLinesRemoved == 0) {
-            return timeCount;
-        }
+//        if (timeCount == 0) {
+//            return 0;
+//        }
+//        if (numLinesRemoved == 0) {
+//            return timeCount;
+//        }
         return numLinesRemoved;
     }
 

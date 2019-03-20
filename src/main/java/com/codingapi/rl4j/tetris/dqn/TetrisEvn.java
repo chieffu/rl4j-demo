@@ -15,7 +15,7 @@ public class TetrisEvn implements MDP<TetrisState, Integer, DiscreteSpace> {
 
     private TetrisState tetrisState;
 
-    private DiscreteSpace actionSpace = new DiscreteSpace(6);
+    private DiscreteSpace actionSpace = new DiscreteSpace(5);
 
     private ObservationSpace<TetrisState> observationSpace = new ArrayObservationSpace(new int[]{228});
 
@@ -66,10 +66,6 @@ public class TetrisEvn implements MDP<TetrisState, Integer, DiscreteSpace> {
                 break;
             }
             case 4: {
-                tetris.down();
-                break;
-            }
-            case 5: {
                 tetris.dropDown();
                 break;
             }
