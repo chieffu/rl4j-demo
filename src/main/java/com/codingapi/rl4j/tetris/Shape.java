@@ -19,10 +19,6 @@ public class Shape {
         setShape(Tetrominoes.NoShape);
     }
 
-    public int[][] getCoords(){
-        return coords;
-    }
-
 
     public void setShape(Tetrominoes shape) {
         int[][][] coordsTable = new int[][][]{

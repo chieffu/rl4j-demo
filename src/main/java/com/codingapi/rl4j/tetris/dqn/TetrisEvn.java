@@ -15,7 +15,7 @@ public class TetrisEvn implements MDP<TetrisState, Integer, DiscreteSpace> {
 
     private TetrisState tetrisState;
 
-    private DiscreteSpace actionSpace = new DiscreteSpace(5);
+    private DiscreteSpace actionSpace = new DiscreteSpace(4);
 
     private ObservationSpace<TetrisState> observationSpace = new ArrayObservationSpace(new int[]{220});
 
@@ -46,6 +46,7 @@ public class TetrisEvn implements MDP<TetrisState, Integer, DiscreteSpace> {
 
     @Override
     public StepReply<TetrisState> step(Integer integer) {
+//        log.info("integer:{}",integer);
         moveStep(integer);
         tetrisState = new TetrisState(tetris.getScore(), tetris.toArray());
         return new StepReply<>(tetrisState, tetrisState.getScore(), isDone(), null);
@@ -53,19 +54,19 @@ public class TetrisEvn implements MDP<TetrisState, Integer, DiscreteSpace> {
 
     private void moveStep(int action) {
         switch (action) {
-            case 1: {
+            case 0: {
                 tetris.left();
                 break;
             }
-            case 2: {
+            case 1: {
                 tetris.right();
                 break;
             }
-            case 3: {
+            case 2: {
                 tetris.up();
                 break;
             }
-            case 4: {
+            case 3: {
                 tetris.dropDown();
                 break;
             }
