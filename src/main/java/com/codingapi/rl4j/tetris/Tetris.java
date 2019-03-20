@@ -87,4 +87,8 @@ public class Tetris extends JFrame {
     public boolean isOver() {
         return board.isOver();
     }
+
+    public static void main(String[] args) {
+        new Tetris().start();
+    }
 }

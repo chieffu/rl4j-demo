@@ -8,12 +8,10 @@ public class Shape {
     enum Tetrominoes {
         NoShape, ZShape, SShape, LineShape,
         TShape, SquareShape, LShape, MirroredLShape
-    }
-
-    ;
+    };
 
     private Tetrominoes pieceShape;
-    private int coords[][];
+    private int[][] coords;
 
 
     public Shape() {
@@ -21,14 +19,8 @@ public class Shape {
         setShape(Tetrominoes.NoShape);
     }
 
-    public double[] toArray() {
-        double[] ar = new double[8];
-        for (int i = 0; i < coords.length; i++) {
-            for (int j = 0; j < coords[i].length; j++) {
-                ar[i + j] = coords[i][j];
-            }
-        }
-        return ar;
+    public int[][] getCoords(){
+        return coords;
     }
 
 
@@ -123,4 +115,6 @@ public class Shape {
         }
         return result;
     }
+
+
 }

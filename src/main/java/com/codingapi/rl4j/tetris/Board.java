@@ -31,6 +31,8 @@ public class Board extends JPanel implements ActionListener {
     JLabel statusbar;
     Shape curPiece;
     Shape.Tetrominoes[] board;
+    private int[][] array;
+
 
 
     public Board(Tetris parent) {
@@ -42,6 +44,7 @@ public class Board extends JPanel implements ActionListener {
 
         statusbar = parent.getStatusBar();
         board = new Shape.Tetrominoes[BoardWidth * BoardHeight];
+        array = new int[BoardWidth][BoardHeight];
         addKeyListener(new TAdapter());
         clearBoard();
     }
@@ -110,9 +113,10 @@ public class Board extends JPanel implements ActionListener {
         for (int i = 0; i < BoardHeight; ++i) {
             for (int j = 0; j < BoardWidth; ++j) {
                 Shape.Tetrominoes shape = shapeAt(j, BoardHeight - i - 1);
-                if (shape != Shape.Tetrominoes.NoShape)
+                if (shape != Shape.Tetrominoes.NoShape) {
                     drawSquare(g, 0 + j * squareWidth(),
                             boardTop + i * squareHeight(), shape);
+                }
             }
         }
 
@@ -124,7 +128,9 @@ public class Board extends JPanel implements ActionListener {
                         boardTop + (BoardHeight - y - 1) * squareHeight(),
                         curPiece.getShape());
             }
+
         }
+
     }
 
     public void dropDown() {
@@ -307,9 +313,9 @@ public class Board extends JPanel implements ActionListener {
 //        if (numLinesRemoved == 0) {
 //            return timeCount;
 //        }
-//        return numLinesRemoved;
+        return numLinesRemoved;
 
-        return timeCount;
+//        return timeCount;
     }
 
     public boolean isOver() {
@@ -334,15 +340,48 @@ public class Board extends JPanel implements ActionListener {
 
 
     public double[] toArray() {
-        double[] newCurPiece = curPiece.toArray();
-        double[] array = new double[newCurPiece.length + board.length];
-        for (int i = 0; i < newCurPiece.length; i++) {
-            array[i] = newCurPiece[i];
+        array = new int[BoardWidth][BoardHeight];
+        for (int i = BoardHeight - 1; i >= 0; --i) {
+            for (int j = 0; j < BoardWidth; ++j) {
+                if (shapeAt(j, i) != Shape.Tetrominoes.NoShape) {
+                    array[j][i] = 1;
+                }else{
+                    array[j][i] = 0;
+                }
+            }
         }
-        for (int i = 0; i < board.length; i++) {
-            array[i + newCurPiece.length] = board[i].name().hashCode();
+        if (curPiece.getShape() != Shape.Tetrominoes.NoShape) {
+            for (int i = 0; i < 4; ++i) {
+                int x = curX + curPiece.x(i);
+                int y = curY - curPiece.y(i);
+                array[x][y] =1;
+            }
         }
-        return array;
+
+//        print();
+        double[] res = new double[BoardWidth*BoardHeight];
+        for (int i = 0; i<BoardWidth;i++) {
+            for (int j = 0; j < BoardHeight; j++) {
+                 res[i+j] = array[i][j];
+            }
+        }
+
+        return res;
+    }
+
+
+    private void print(){
+
+        for (int i = 0; i<BoardWidth;i++) {
+            for (int j = 0; j < BoardHeight; j++) {
+                System.out.print(array[i][j]+",");
+            }
+            System.out.println();
+        }
+
+
+
+
     }
 
 }
