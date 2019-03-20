@@ -9,7 +9,7 @@ import org.deeplearning4j.rl4j.space.DiscreteSpace;
 import org.deeplearning4j.rl4j.space.ObservationSpace;
 
 @Slf4j
-public class TetrisEvn  implements MDP<TetrisState, Integer, DiscreteSpace> {
+public class TetrisEvn implements MDP<TetrisState, Integer, DiscreteSpace> {
 
     private Tetris tetris;
 
@@ -17,7 +17,7 @@ public class TetrisEvn  implements MDP<TetrisState, Integer, DiscreteSpace> {
 
     private DiscreteSpace actionSpace = new DiscreteSpace(6);
 
-    private ObservationSpace<TetrisState> observationSpace = new ArrayObservationSpace(new int[] {228});
+    private ObservationSpace<TetrisState> observationSpace = new ArrayObservationSpace(new int[]{228});
 
 
     @Override
@@ -32,11 +32,11 @@ public class TetrisEvn  implements MDP<TetrisState, Integer, DiscreteSpace> {
 
     @Override
     public TetrisState reset() {
-        if(tetris==null) {
+        if (tetris == null) {
             tetris = new Tetris();
         }
         tetris.start();
-        return tetrisState = new TetrisState(0,tetris.toArray());
+        return tetrisState = new TetrisState(0, tetris.toArray());
     }
 
     @Override
@@ -48,29 +48,29 @@ public class TetrisEvn  implements MDP<TetrisState, Integer, DiscreteSpace> {
     public StepReply<TetrisState> step(Integer integer) {
         moveStep(integer);
 
-        tetrisState = new TetrisState(tetris.getScore(),tetris.toArray());
+        tetrisState = new TetrisState(tetris.getScore(), tetris.toArray());
         return new StepReply<>(tetrisState, tetrisState.getScore(), isDone(), null);
     }
 
-    private void moveStep(int action){
-        switch (action){
-            case 1:{
+    private void moveStep(int action) {
+        switch (action) {
+            case 1: {
                 tetris.left();
                 break;
             }
-            case 2:{
+            case 2: {
                 tetris.right();
                 break;
             }
-            case 3:{
+            case 3: {
                 tetris.up();
                 break;
             }
-            case 4:{
+            case 4: {
                 tetris.down();
                 break;
             }
-            case 5:{
+            case 5: {
                 tetris.dropDown();
                 break;
             }

@@ -1,7 +1,6 @@
 package com.codingapi.rl4j.tetris;
 
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,10 +13,10 @@ public class Board extends JPanel implements ActionListener {
 
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	final int BoardWidth = 10;
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    final int BoardWidth = 10;
     final int BoardHeight = 22;
 
     Timer timer;
@@ -34,18 +33,17 @@ public class Board extends JPanel implements ActionListener {
     Shape.Tetrominoes[] board;
 
 
-
     public Board(Tetris parent) {
 
-       setFocusable(true);
-       curPiece = new Shape();
-       timer = new Timer(400, this);
-       timer.start(); 
+        setFocusable(true);
+        curPiece = new Shape();
+        timer = new Timer(400, this);
+        timer.start();
 
-       statusbar =  parent.getStatusBar();
-       board = new Shape.Tetrominoes[BoardWidth * BoardHeight];
-       addKeyListener(new TAdapter());
-       clearBoard();  
+        statusbar = parent.getStatusBar();
+        board = new Shape.Tetrominoes[BoardWidth * BoardHeight];
+        addKeyListener(new TAdapter());
+        clearBoard();
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -59,13 +57,20 @@ public class Board extends JPanel implements ActionListener {
     }
 
 
-    int squareWidth() { return (int) getSize().getWidth() / BoardWidth; }
-    int squareHeight() { return (int) getSize().getHeight() / BoardHeight; }
-    Shape.Tetrominoes shapeAt(int x, int y) { return board[(y * BoardWidth) + x]; }
+    int squareWidth() {
+        return (int) getSize().getWidth() / BoardWidth;
+    }
+
+    int squareHeight() {
+        return (int) getSize().getHeight() / BoardHeight;
+    }
+
+    Shape.Tetrominoes shapeAt(int x, int y) {
+        return board[(y * BoardWidth) + x];
+    }
 
 
-    public void start()
-    {
+    public void start() {
         if (isPaused)
             return;
 
@@ -80,8 +85,7 @@ public class Board extends JPanel implements ActionListener {
         timer.start();
     }
 
-    private void pause()
-    {
+    private void pause() {
         if (!isStarted)
             return;
 
@@ -91,13 +95,12 @@ public class Board extends JPanel implements ActionListener {
             statusbar.setText("paused");
         } else {
             timer.start();
-            statusbar.setText("Score"+String.valueOf(numLinesRemoved));
+            statusbar.setText("Score" + String.valueOf(numLinesRemoved));
         }
         repaint();
     }
 
-    public void paint(Graphics g)
-    { 
+    public void paint(Graphics g) {
         super.paint(g);
 
         Dimension size = getSize();
@@ -109,7 +112,7 @@ public class Board extends JPanel implements ActionListener {
                 Shape.Tetrominoes shape = shapeAt(j, BoardHeight - i - 1);
                 if (shape != Shape.Tetrominoes.NoShape)
                     drawSquare(g, 0 + j * squareWidth(),
-                               boardTop + i * squareHeight(), shape);
+                            boardTop + i * squareHeight(), shape);
             }
         }
 
@@ -118,14 +121,13 @@ public class Board extends JPanel implements ActionListener {
                 int x = curX + curPiece.x(i);
                 int y = curY - curPiece.y(i);
                 drawSquare(g, 0 + x * squareWidth(),
-                           boardTop + (BoardHeight - y - 1) * squareHeight(),
-                           curPiece.getShape());
+                        boardTop + (BoardHeight - y - 1) * squareHeight(),
+                        curPiece.getShape());
             }
         }
     }
 
-    public void dropDown()
-    {
+    public void dropDown() {
         int newY = curY;
         while (newY > 0) {
             if (!tryMove(curPiece, curX, newY - 1))
@@ -135,21 +137,18 @@ public class Board extends JPanel implements ActionListener {
         pieceDropped();
     }
 
-    private void oneLineDown()
-    {
+    private void oneLineDown() {
         if (!tryMove(curPiece, curX, curY - 1))
             pieceDropped();
     }
 
 
-    private void clearBoard()
-    {
+    private void clearBoard() {
         for (int i = 0; i < BoardHeight * BoardWidth; ++i)
             board[i] = Shape.Tetrominoes.NoShape;
     }
 
-    private void pieceDropped()
-    {
+    private void pieceDropped() {
         for (int i = 0; i < 4; ++i) {
             int x = curX + curPiece.x(i);
             int y = curY - curPiece.y(i);
@@ -162,8 +161,7 @@ public class Board extends JPanel implements ActionListener {
             newPiece();
     }
 
-    private void newPiece()
-    {
+    private void newPiece() {
         curPiece.setRandomShape();
         curX = BoardWidth / 2 + 1;
         curY = BoardHeight - 1 + curPiece.minY();
@@ -177,8 +175,7 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
-    private boolean tryMove(Shape newPiece, int newX, int newY)
-    {
+    private boolean tryMove(Shape newPiece, int newX, int newY) {
         for (int i = 0; i < 4; ++i) {
             int x = newX + newPiece.x(i);
             int y = newY - newPiece.y(i);
@@ -195,8 +192,7 @@ public class Board extends JPanel implements ActionListener {
         return true;
     }
 
-    private void removeFullLines()
-    {
+    private void removeFullLines() {
         int numFullLines = 0;
 
         for (int i = BoardHeight - 1; i >= 0; --i) {
@@ -213,7 +209,7 @@ public class Board extends JPanel implements ActionListener {
                 ++numFullLines;
                 for (int k = i; k < BoardHeight - 1; ++k) {
                     for (int j = 0; j < BoardWidth; ++j)
-                         board[(k * BoardWidth) + j] = shapeAt(j, k + 1);
+                        board[(k * BoardWidth) + j] = shapeAt(j, k + 1);
                 }
             }
         }
@@ -225,15 +221,14 @@ public class Board extends JPanel implements ActionListener {
             curPiece.setShape(Shape.Tetrominoes.NoShape);
             repaint();
         }
-     }
+    }
 
-    private void drawSquare(Graphics g, int x, int y, Shape.Tetrominoes shape)
-    {
-        Color colors[] = { 
-        	new Color(0, 0, 0), new Color(204, 102, 102), 
-            new Color(102, 204, 102), new Color(102, 102, 204), 
-            new Color(204, 204, 102), new Color(204, 102, 204), 
-            new Color(102, 204, 204), new Color(218, 170, 0)
+    private void drawSquare(Graphics g, int x, int y, Shape.Tetrominoes shape) {
+        Color colors[] = {
+                new Color(0, 0, 0), new Color(204, 102, 102),
+                new Color(102, 204, 102), new Color(102, 102, 204),
+                new Color(204, 204, 102), new Color(204, 102, 204),
+                new Color(102, 204, 204), new Color(218, 170, 0)
         };
 
 
@@ -248,103 +243,102 @@ public class Board extends JPanel implements ActionListener {
 
         g.setColor(color.darker());
         g.drawLine(x + 1, y + squareHeight() - 1,
-                         x + squareWidth() - 1, y + squareHeight() - 1);
+                x + squareWidth() - 1, y + squareHeight() - 1);
         g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1,
-                         x + squareWidth() - 1, y + 1);
+                x + squareWidth() - 1, y + 1);
     }
 
 
     class TAdapter extends KeyAdapter {
-         public void keyPressed(KeyEvent e) {
+        public void keyPressed(KeyEvent e) {
 
-             if (!isStarted || curPiece.getShape() == Shape.Tetrominoes.NoShape) {
-                 return;
-             }
+            if (!isStarted || curPiece.getShape() == Shape.Tetrominoes.NoShape) {
+                return;
+            }
 
-             int keycode = e.getKeyCode();
+            int keycode = e.getKeyCode();
 
-             if (keycode == 'p' || keycode == 'P') {
-                 pause();
-                 return;
-             }
+            if (keycode == 'p' || keycode == 'P') {
+                pause();
+                return;
+            }
 
-             if (isPaused)
-                 return;
+            if (isPaused)
+                return;
+            switch (keycode) {
+                case KeyEvent.VK_LEFT:
+                    left();
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    right();
+                    break;
+                case KeyEvent.VK_DOWN:
+                    down();
+                    break;
+                case KeyEvent.VK_UP:
+                    up();
+                    break;
+                case KeyEvent.VK_SPACE:
+                    dropDown();
+                    break;
+                case 'd':
+                    oneLineDown();
+                    break;
+                case 'D':
+                    oneLineDown();
+                    break;
+                default: {
+                    break;
+                }
+            }
 
-             switch (keycode) {
-             case KeyEvent.VK_LEFT:
-//                 tryMove(curPiece, curX - 1, curY);
-                 left();
-                 break;
-             case KeyEvent.VK_RIGHT:
-//                 tryMove(curPiece, curX + 1, curY);
-                 right();
-                 break;
-             case KeyEvent.VK_DOWN:
-                 down();
-//                 tryMove(curPiece.rotateRight(), curX, curY);
-                 break;
-             case KeyEvent.VK_UP:
-//                 tryMove(curPiece.rotateLeft(), curX, curY);
-                 up();
-                 break;
-             case KeyEvent.VK_SPACE:
-                 dropDown();
-                 break;
-             case 'd':
-                 oneLineDown();
-                 break;
-             case 'D':
-                 oneLineDown();
-                 break;
-             }
 
-         }
-     }
+        }
+    }
 
-     public void close(){
-         timer.stop();
-     }
+    public void close() {
+        timer.stop();
+    }
 
-     public double getScore(){
-         if(timeCount==0){
-             return 0;
-         }
-         if(numLinesRemoved==0){
-             return (1/timeCount);
-         }
-         return numLinesRemoved;
-     }
+    public double getScore() {
+        if (timeCount == 0) {
+            return 0;
+        }
+        if (numLinesRemoved == 0) {
+            return timeCount;
+        }
+        return numLinesRemoved;
+    }
 
-     public boolean isOver(){
+    public boolean isOver() {
         return isOver;
-     }
+    }
 
-     public void left(){
-         tryMove(curPiece, curX - 1, curY);
-     }
+    public void left() {
+        tryMove(curPiece, curX - 1, curY);
+    }
 
-    public void right(){
+    public void right() {
         tryMove(curPiece, curX + 1, curY);
     }
 
-    public void down(){
+    public void down() {
         tryMove(curPiece.rotateRight(), curX, curY);
     }
 
-    public void up(){
+    public void up() {
         tryMove(curPiece.rotateLeft(), curX, curY);
     }
 
 
     public double[] toArray() {
-        double[] curpiece = curPiece.toArray();
-        double[] array = new double[curpiece.length+board.length];
-        for(int i=0;i<curpiece.length;i++){
-            array[i] = curpiece[i];
+        double[] newCurPiece = curPiece.toArray();
+        double[] array = new double[newCurPiece.length + board.length];
+        for (int i = 0; i < newCurPiece.length; i++) {
+            array[i] = newCurPiece[i];
         }
-        for(int i=0;i<board.length;i++){
-            array[i+curpiece.length] = board[i].name().hashCode();
+        for (int i = 0; i < board.length; i++) {
+            array[i + newCurPiece.length] = board[i].name().hashCode();
         }
         return array;
     }

@@ -32,7 +32,6 @@ public class Main {
             );
 
 
-
     public static DQNFactoryStdDense.Configuration DQN_NET =
             DQNFactoryStdDense.Configuration.builder()
                     .l2(0.01)
@@ -66,7 +65,7 @@ public class Main {
             mdp.reset();
 
             double reward = policy.play(mdp);
-            log.info("reward-->{}",reward);
+            log.info("reward-->{}", reward);
         }
 
         //useless on toy but good practice!
@@ -74,7 +73,7 @@ public class Main {
 
     }
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         running();
     }
 }

@@ -11,39 +11,37 @@ import org.nd4j.linalg.learning.config.Adam;
 import java.io.IOException;
 
 /**
- *  游戏测试
+ * 游戏测试
  */
 @Slf4j
 public class MyTest {
 
 
     public static QLearning.QLConfiguration QL_CONFIG =
-        new QLearning.QLConfiguration(
-            123,   //Random seed
-            1000,//Max step By epoch 批次下最大执行的步数
-            5000, //Max step            总执行的部署
-            1000, //Max size of experience replay 记忆数据
-            100,    //size of batches
-            100,   //target update (hard) 每10次更新一次参数
-            0,     //num step noop warmup   步数从0开始
-            0.05,  //reward scaling
-            0.99,  //gamma
-            10.0,  //td-error clipping
-            0.1f,  //min epsilon
-            100,  //num step for eps greedy anneal
-            true   //double DQN
-        );
-
+            new QLearning.QLConfiguration(
+                    123,   //Random seed
+                    1000,//Max step By epoch 批次下最大执行的步数
+                    5000, //Max step            总执行的部署
+                    1000, //Max size of experience replay 记忆数据
+                    100,    //size of batches
+                    100,   //target update (hard) 每10次更新一次参数
+                    0,     //num step noop warmup   步数从0开始
+                    0.05,  //reward scaling
+                    0.99,  //gamma
+                    10.0,  //td-error clipping
+                    0.1f,  //min epsilon
+                    100,  //num step for eps greedy anneal
+                    true   //double DQN
+            );
 
 
     public static DQNFactoryStdDense.Configuration DQN_NET =
-        DQNFactoryStdDense.Configuration.builder()
-            .l2(0.01)
-            .updater(new Adam(1e-2))
-            .numLayer(3)
-            .numHiddenNodes(16)
-            .build();
-
+            DQNFactoryStdDense.Configuration.builder()
+                    .l2(0.01)
+                    .updater(new Adam(1e-2))
+                    .numLayer(3)
+                    .numHiddenNodes(16)
+                    .build();
 
 
     public static void learning() throws IOException {
@@ -72,7 +70,6 @@ public class MyTest {
     }
 
 
-
     public static void running() throws IOException {
 
         //record the training data in rl4j-data in a new folder
@@ -94,7 +91,7 @@ public class MyTest {
             mdp.reset();
 
             double reward = policy.play(mdp);
-            log.info("reward-->{}",reward);
+            log.info("reward-->{}", reward);
         }
 
         //useless on toy but good practice!
@@ -102,7 +99,7 @@ public class MyTest {
 
     }
 
-    public static void testing() throws IOException{
+    public static void testing() throws IOException {
 
         //load the previous agent
         DQNPolicy<MyGameState> policy = DQNPolicy.load("my_simple.policy");
