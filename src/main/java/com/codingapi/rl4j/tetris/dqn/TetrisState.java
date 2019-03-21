@@ -13,8 +13,8 @@ public class TetrisState implements Encodable {
     }
 
     public TetrisState(double score, double[] data) {
-        this.score = score;
-        this.data = data;
+        this.score =  score;
+        this.data  =  data;
     }
 
     @Override

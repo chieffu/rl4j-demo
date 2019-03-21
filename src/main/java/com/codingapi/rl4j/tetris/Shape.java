@@ -85,8 +85,9 @@ public class Shape {
     }
 
     public Shape rotateLeft() {
-        if (pieceShape == Tetrominoes.SquareShape)
+        if (pieceShape == Tetrominoes.SquareShape) {
             return this;
+        }
 
         Shape result = new Shape();
         result.pieceShape = pieceShape;
@@ -99,9 +100,9 @@ public class Shape {
     }
 
     public Shape rotateRight() {
-        if (pieceShape == Tetrominoes.SquareShape)
+        if (pieceShape == Tetrominoes.SquareShape) {
             return this;
-
+        }
         Shape result = new Shape();
         result.pieceShape = pieceShape;
 

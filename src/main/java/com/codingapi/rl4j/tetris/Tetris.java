@@ -49,6 +49,8 @@ public class Tetris extends JFrame {
         setSize(200, 400);
         setTitle("Tetris");
         addWindowListener(new WindowAdapter() {
+
+            @Override
             public void windowClosing(WindowEvent e) {
                 int confirmed = JOptionPane.showConfirmDialog(null,
                         "Are you sure you want to exit the program?", "Exit Program Message Box",

@@ -49,6 +49,7 @@ public class Board extends JPanel implements ActionListener {
         clearBoard();
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (isFallingFinished) {
             isFallingFinished = false;
@@ -74,8 +75,9 @@ public class Board extends JPanel implements ActionListener {
 
 
     public void start() {
-        if (isPaused)
+        if (isPaused) {
             return;
+        }
 
         timeCount = 0;
         isStarted = true;
@@ -89,8 +91,9 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void pause() {
-        if (!isStarted)
+        if (!isStarted) {
             return;
+        }
 
         isPaused = !isPaused;
         if (isPaused) {
@@ -103,6 +106,7 @@ public class Board extends JPanel implements ActionListener {
         repaint();
     }
 
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
 
@@ -136,22 +140,25 @@ public class Board extends JPanel implements ActionListener {
     public void dropDown() {
         int newY = curY;
         while (newY > 0) {
-            if (!tryMove(curPiece, curX, newY - 1))
+            if (!tryMove(curPiece, curX, newY - 1)) {
                 break;
+            }
             --newY;
         }
         pieceDropped();
     }
 
     private void oneLineDown() {
-        if (!tryMove(curPiece, curX, curY - 1))
+        if (!tryMove(curPiece, curX, curY - 1)) {
             pieceDropped();
+        }
     }
 
 
     private void clearBoard() {
-        for (int i = 0; i < BoardHeight * BoardWidth; ++i)
+        for (int i = 0; i < BoardHeight * BoardWidth; ++i) {
             board[i] = Shape.Tetrominoes.NoShape;
+        }
     }
 
     private void pieceDropped() {
@@ -163,8 +170,9 @@ public class Board extends JPanel implements ActionListener {
 
         removeFullLines();
 
-        if (!isFallingFinished)
+        if (!isFallingFinished) {
             newPiece();
+        }
     }
 
     private void newPiece() {
@@ -185,10 +193,12 @@ public class Board extends JPanel implements ActionListener {
         for (int i = 0; i < 4; ++i) {
             int x = newX + newPiece.x(i);
             int y = newY - newPiece.y(i);
-            if (x < 0 || x >= BoardWidth || y < 0 || y >= BoardHeight)
+            if (x < 0 || x >= BoardWidth || y < 0 || y >= BoardHeight) {
                 return false;
-            if (shapeAt(x, y) != Shape.Tetrominoes.NoShape)
+            }
+            if (shapeAt(x, y) != Shape.Tetrominoes.NoShape) {
                 return false;
+            }
         }
 
         curPiece = newPiece;
@@ -214,8 +224,9 @@ public class Board extends JPanel implements ActionListener {
             if (lineIsFull) {
                 ++numFullLines;
                 for (int k = i; k < BoardHeight - 1; ++k) {
-                    for (int j = 0; j < BoardWidth; ++j)
+                    for (int j = 0; j < BoardWidth; ++j) {
                         board[(k * BoardWidth) + j] = shapeAt(j, k + 1);
+                    }
                 }
             }
         }
@@ -256,6 +267,8 @@ public class Board extends JPanel implements ActionListener {
 
 
     class TAdapter extends KeyAdapter {
+
+        @Override
         public void keyPressed(KeyEvent e) {
 
             if (!isStarted || curPiece.getShape() == Shape.Tetrominoes.NoShape) {
@@ -269,8 +282,9 @@ public class Board extends JPanel implements ActionListener {
                 return;
             }
 
-            if (isPaused)
+            if (isPaused) {
                 return;
+            }
             switch (keycode) {
                 case KeyEvent.VK_LEFT:
                     left();
@@ -307,15 +321,13 @@ public class Board extends JPanel implements ActionListener {
     }
 
     public double getScore() {
-//        if (timeCount == 0) {
-//            return 0;
-//        }
-//        if (numLinesRemoved == 0) {
-//            return timeCount;
-//        }
+        if (timeCount == 0) {
+            return 0;
+        }
+        if (numLinesRemoved == 0) {
+            return 1-(1/timeCount);
+        }
         return numLinesRemoved;
-
-//        return timeCount;
     }
 
     public boolean isOver() {
@@ -359,28 +371,24 @@ public class Board extends JPanel implements ActionListener {
         }
 
 //        print();
-        double[] res = new double[BoardWidth*BoardHeight];
+        double[] res = new double[BoardWidth*BoardHeight+1];
         for (int i = 0; i<BoardWidth;i++) {
             for (int j = 0; j < BoardHeight; j++) {
                  res[i+j] = array[i][j];
             }
         }
-
+        res[BoardWidth*BoardHeight] = curPiece.getShape().ordinal();
         return res;
     }
 
 
     private void print(){
-
         for (int i = 0; i<BoardWidth;i++) {
             for (int j = 0; j < BoardHeight; j++) {
                 System.out.print(array[i][j]+",");
             }
             System.out.println();
         }
-
-
-
 
     }
 

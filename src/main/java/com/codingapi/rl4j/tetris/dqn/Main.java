@@ -73,7 +73,23 @@ public class Main {
 
     }
 
+    public static void testing() throws IOException {
+
+        //load the previous agent
+        DQNPolicy<TetrisState> policy = DQNPolicy.load("tetris.policy");
+
+        //define the mdp from toy (toy length)
+        TetrisEvn mdp = new TetrisEvn();
+
+        for (int i = 0; i < 10; i++) {
+            mdp.reset();
+            double reward = policy.play(mdp);
+            System.out.println(reward);
+        }
+    }
+
     public static void main(String[] args) throws IOException {
-        running();
+//        running();
+        testing();
     }
 }
