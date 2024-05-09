@@ -44,7 +44,7 @@ public class BlackjackMain {
     public static void running() throws IOException {
 
         //record the training data in rl4j-data in a new folder
-        DataManager manager = new DataManager();
+        DataManager manager = new DataManager(true);
 
         //define the mdp from toy (toy length)
         BlackjackEnv mdp = new BlackjackEnv();
