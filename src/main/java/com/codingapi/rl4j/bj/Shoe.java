@@ -34,7 +34,7 @@ public class Shoe {
     }
     Collections.shuffle(newShoe);
     this.shoe = newShoe;
-    cut = (int)(Math.random()*(180-120))+120;
+    cut = (int)(Math.random()*(180-60))+60;
     cardCount = new int[13];
     Arrays.fill(cardCount, 4*deckSize);
   }
