@@ -7,7 +7,14 @@ package com.codingapi.rl4j.bj;
 public class Card implements Comparable<Card> {
 
     public enum Suit {
-        DIAMONDS, HEARTS, SPADES, CLUBS
+        DIAMONDS("♦"), HEARTS("❤"), SPADES("♠"), CLUBS("♣");
+        String msg;
+        Suit(String msg){
+            this.msg=msg;
+        }
+        public String msg(){
+            return msg;
+        }
     }
 
     public enum Rank {
@@ -35,6 +42,28 @@ public class Card implements Comparable<Card> {
     public Card(Suit suit, Rank rank) {
         this.suit = suit;
         this.rank = rank;
+    }
+
+    public String toString() {
+        String msg = suit.msg();
+        switch (this.getNum()) {
+            case 1:
+                msg = "A"+msg  ;
+                return msg;
+            case 11:
+                msg = "J"+msg ;
+                return msg;
+            case 12:
+                msg = "Q"+msg  ;
+                return msg;
+            case 13:
+                msg = "K"+msg ;
+                return msg;
+            default:
+                msg =  this.getNum()+msg ;
+                return msg;
+        }
+
     }
 
     public boolean isFace() {

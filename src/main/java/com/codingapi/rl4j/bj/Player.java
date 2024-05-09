@@ -118,4 +118,12 @@ public class Player {
     public boolean isSplit(){
         return split!=null;
     }
+
+    public String toString(){
+        if(hand.isEmpty())return hand.toString();
+        if(split!=null){
+            return String.format("%s-%s,%s",getHandValue(),hand.toString(),split.toString());
+        }
+        return String.format("%s-%s",getHandValue(),hand.toString());
+    }
 }

@@ -7,6 +7,10 @@ import java.util.Arrays;
 @Getter
 public class Blackjack {
 
+   public static final Action[] BET_ACTIONS = new Action[]{Action.BET_BIG, Action.BET_MEDIUM, Action.BET_SMALL};
+   public static final Action[] STAND_ACTION = {Action.STAND};
+   public static final Action[] FIRST_ROUND_ACTIONS  = new Action[]{Action.STAND, Action.HIT, Action.DOUBLE_DOWN, Action.SPLIT};
+   public static final Action[] COMMON_ACTIONS = new Action[]{Action.STAND, Action.HIT};
    Shoe shoe ;
    Player player;
    Dealer dealer;
@@ -18,13 +22,13 @@ public class Blackjack {
    }
    public Action[] getAvailableActions() {
       if(isNewRound()){
-         return new Action[]{Action.BET_BIG, Action.BET_MEDIUM,Action.BET_SMALL};
+         return BET_ACTIONS;
       }else if(player.isDown()){
-         return new Action[]{Action.STAND};
+         return STAND_ACTION;
       }else if(isFirstRound()){
-         return new Action[]{Action.STAND,Action.HIT,Action.DOUBLE_DOWN,Action.SPLIT};
+         return FIRST_ROUND_ACTIONS;
       }else{
-         return new Action[]{Action.STAND,Action.HIT};
+         return COMMON_ACTIONS;
       }
    }
 
@@ -67,13 +71,14 @@ public class Blackjack {
       double bets =  player.getBet();
       if (player.isBusted()) return -bets;
       if (dealer.isBusted() ||player.getHandValue()>dealer.getHandValue()) return bets;
+      else if(player.getHandValue()<dealer.getHandValue()) return -bets;
       return 0;
    }
 
    public double takeAction(Integer actionIndex) {
       Action action = Action.values()[actionIndex];
-      Action[] avaliableActions = getAvailableActions();
-      if(!Arrays.asList(avaliableActions).contains(action)){
+      Action[] availableActions = getAvailableActions();
+      if(Arrays.stream(availableActions).allMatch(a->a!=action)){
          return -20;
       }
       double score = 0;
