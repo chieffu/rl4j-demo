@@ -100,7 +100,17 @@ public class Blackjack {
             boolean s = player.split();
             if(s){
                player.getSplit().hit(shoe.drawCard());
+               if(player.getSplit().isDown()){
+                  player.getSplit().stand();
+               }
                player.hit(shoe.drawCard());
+               if(player.isDown()){
+                  while (dealer.shouldHit()) {
+                     dealer.hit(shoe.drawCard());
+                  }
+                  score = getScore();
+                  nextRound();
+               }
             }
             break;
          case DOUBLE_DOWN:
@@ -113,6 +123,13 @@ public class Blackjack {
             break;
          case HIT:
             player.hit(shoe.drawCard());
+            if(player.isDown()){
+               while (dealer.shouldHit()) {
+                  dealer.hit(shoe.drawCard());
+               }
+               score = getScore();
+               nextRound();
+            }
             break;
          case STAND:
             player.stand();
