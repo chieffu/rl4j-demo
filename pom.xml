@@ -115,7 +115,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.codingapi.rl4j.demo.MyTest</mainClass>
+                    <mainClass>com.codingapi.rl4j.bj.dqn.BlackjackMain</mainClass>
                 </configuration>
             </plugin>
 
