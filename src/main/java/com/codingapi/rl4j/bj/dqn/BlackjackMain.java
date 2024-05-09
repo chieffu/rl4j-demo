@@ -1,7 +1,5 @@
 package com.codingapi.rl4j.bj.dqn;
 
-import com.codingapi.rl4j.tetris.dqn.TetrisEvn;
-import com.codingapi.rl4j.tetris.dqn.TetrisState;
 import lombok.extern.slf4j.Slf4j;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.QLearning;
 import org.deeplearning4j.rl4j.learning.sync.qlearning.discrete.QLearningDiscreteDense;
@@ -12,7 +10,6 @@ import org.nd4j.linalg.learning.config.Adam;
 
 import java.io.IOException;
 
-@SpringBootApplication
 @Slf4j
 public class BlackjackMain {
 

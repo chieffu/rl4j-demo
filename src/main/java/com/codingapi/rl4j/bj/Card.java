@@ -1,4 +1,4 @@
-package com.chieffu.pocker.project;
+package com.codingapi.rl4j.bj;
 
 /**
  * Created by Zosit on 11/22/2017.
@@ -12,16 +12,20 @@ public class Card implements Comparable<Card> {
 
     public enum Rank {
         ACE(1), TWO(2), THREE(3), FOUR(4), FIVE(5), SIX(6), SEVEN(7),
-        EIGHT(8), NINE(9), TEN(10), JACK(10), QUEEN(10), KING(10);
+        EIGHT(8), NINE(9), TEN(10), JACK(11), QUEEN(12), KING(13);
 
-        private final int value;
+        private final int num;
 
         Rank(int value) {
-            this.value = value;
+            this.num = value;
         }
 
         public int getValue() {
-            return value;
+            return num>10?10:num;
+        }
+
+        public int getNum(){
+            return num;
         }
     }
 
@@ -51,6 +55,10 @@ public class Card implements Comparable<Card> {
 
     public int getValue() {
         return this.rank.getValue();
+    }
+
+    public int getNum(){
+        return this.rank.getNum();
     }
 
     public int compareTo(Card card2) {

@@ -1,65 +1,121 @@
-package com.chieffu.pocker.blackjack.mock;
+package com.codingapi.rl4j.bj;
 
-import com.chieffu.pocker.Pocker;
-import com.chieffu.pocker.blackjack.Blackjack;
-import lombok.Data;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Data
+/**
+ * Created by Zosit on 11/22/2017.
+ * This class acts as a player in a game of BlackJack (I think the dealer will also be here?).
+ * They should be able to use a Shoe class to draw and discard cards from their hand.
+ */
+@Getter
 public class Player {
-    protected List<Pocker> cards = new ArrayList<>();
-    List<Player> splits;
-    public List<Player> split(){
-        Player p0 = new Player();
-        p0.hit(cards.get(0));
-        Player p1 = new Player();
-        p1.hit(cards.get(1));
-        splits = new ArrayList<>();
-        splits.add(p0);
-        splits.add(p1);
-        return splits;
+
+
+    List<Card> hand ;
+    double bet = 0.0;
+    Player split;
+
+    boolean stand;
+
+    public Player() {
+        hand = new ArrayList<>();
     }
 
-    public boolean shouldHit(){
-        return getHandValue()<12;
-    }
-    public int getHandValue(){
-       int[] dot= Blackjack.dots( cards.stream().map(p -> Blackjack.dot(p)).collect(Collectors.toList()));
-       return dot[dot.length-1];
-    }
-    public int getHandMinValue(){
-        int[] dot= Blackjack.dots( cards.stream().map(p -> Blackjack.dot(p)).collect(Collectors.toList()));
-        return dot[0];
-    }
-    public boolean hasAce(){
-        int[] dot= Blackjack.dots( cards.stream().map(p -> Blackjack.dot(p)).collect(Collectors.toList()));
-        return dot.length>1;
+    public List<Card> getHand() {
+        return hand;
     }
 
-    public boolean isBlackjack(){
-        return Blackjack.isBlackjack(cards.stream().map(p -> Blackjack.dot(p)).collect(Collectors.toList()));
-    }
-    public void hit(Pocker pocker){
-        cards.add(pocker);
-    }
-
-    public List<Integer> getCardNums() {
-        return getCards().stream().map(p -> Blackjack.dot(p)).collect(Collectors.toList());
-    }
-
-    public void reset(){
-        cards.clear();
-        splits=null;
-    }
-
-    public String toString(){
-        if(splits!=null){
-            return splits.toString();
+    public int getHandValue() {
+        int total = 0;
+        for (Card c : hand) {
+            total += c.getValue();
         }
-        return getCards().toString() + getHandValue();
+        if (hasAce() && total <= 11) {
+            total += 10;
+        }
+        return total;
     }
 
+    public int getHandMinValue() {
+        int total = 0;
+        for (Card c : hand) {
+            total += c.getValue();
+        }
+        return total;
+    }
+
+    public boolean hasAce() {
+        for (Card c : hand) {
+            if (c.isAce()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void reset() {
+        hand.clear();
+        bet = 0.0;
+        split = null;
+        stand = false;
+    }
+
+    public void hit(Card card) {
+        if(split!=null&&!split.isDown()){
+            split.hit(card);
+        }else {
+            hand.add(card);
+        }
+    }
+
+    public void doubleDown(Card card) {
+        bet *= 2;
+        hit(card);
+        stand();
+    }
+    public void bet(double bet){
+        this.bet = bet;
+    }
+
+    public void stand(){
+       if(split!=null&&split.stand==false) {
+           split.stand = true;
+       }else{
+           stand=true;
+       }
+    }
+
+    public boolean split(){
+        if(hand.size()==2 && hand.get(0).getNum()==hand.get(1).getNum()&&split==null){
+            split=new Player();
+            Card card = hand.remove(1);
+            split.hit(card);
+            split.bet=bet;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isDown(){
+        if(split==null||split.isDown()){
+            return isBlackjack()||isBusted()||stand;
+        }
+        return false;
+    }
+
+    public boolean isBlackjack() {
+        return split==null&&hand.size() == 2 &&
+                ((hand.get(0).isFace() && hand.get(1).isAce()) ||
+                        (hand.get(0).isAce() && hand.get(1).isFace()));
+    }
+
+    public boolean isBusted() {
+        return getHandValue()>21;
+    }
+    public boolean isSplit(){
+        return split!=null;
+    }
 }
