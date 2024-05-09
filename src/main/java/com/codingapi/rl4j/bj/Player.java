@@ -101,7 +101,7 @@ public class Player {
 
     public boolean isDown(){
         if(split==null||split.isDown()){
-            return isBlackjack()||isBusted()||stand;
+            return getHandValue()>=21||stand;
         }
         return false;
     }
